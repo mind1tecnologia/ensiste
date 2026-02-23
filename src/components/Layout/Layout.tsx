@@ -15,7 +15,7 @@ import {
 import { useAppContext } from '../../context/AppContext';
 import clsx from 'clsx';
 import styles from './Layout.module.css';
-import ensisteLogo from '../../assets/ensiste-logo.svg';
+import ensisteLogo from '../../assets/ensiste-logo-anexo.png';
 
 interface LayoutProps {
     children: ReactNode;
@@ -78,10 +78,6 @@ export const Layout = ({ children }: LayoutProps) => {
                 >
                     <div className={styles.logoIcon} aria-hidden="true">
                         <img src={ensisteLogo} alt="" className={styles.logoMark} />
-                    </div>
-                    <div className={styles.logoTextBlock}>
-                        <span className={styles.logoText}>ENSISTE</span>
-                        <span className={styles.logoEyebrow}>Plataforma Operacional</span>
                     </div>
                 </button>
 
