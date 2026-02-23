@@ -918,6 +918,128 @@
     margin-top: 2px;
 }
 
+.dispatchPanel {
+    border: 1px solid rgb(var(--brand-blue-rgb) / 0.16);
+    border-radius: 12px;
+    background:
+        radial-gradient(circle at 100% 0%, rgb(var(--brand-blue-rgb) / 0.05), transparent 48%),
+        linear-gradient(180deg, #fbfdff, #ffffff);
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+}
+
+.dispatchPanelHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dispatchPanelHeader strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 0.88rem;
+}
+
+.dispatchPanelHeader p {
+    margin: 4px 0 0;
+    color: var(--secondary);
+    font-size: 0.79rem;
+    line-height: 1.45;
+}
+
+.dispatchTag {
+    border-radius: 999px;
+    border: 1px solid rgb(var(--brand-blue-rgb) / 0.18);
+    background: rgb(var(--brand-blue-rgb) / 0.06);
+    color: var(--brand-blue);
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dispatchActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dispatchPrimaryButton,
+.dispatchSecondaryButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dispatchPrimaryButton {
+    border: 1px solid rgb(var(--primary-rgb) / 0.18);
+    background: linear-gradient(135deg, var(--primary), #d94d59);
+    color: white;
+    box-shadow: 0 10px 20px rgb(var(--primary-rgb) / 0.2);
+}
+
+.dispatchPrimaryButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgb(var(--primary-rgb) / 0.24);
+}
+
+.dispatchSecondaryButton {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--brand-blue);
+}
+
+.dispatchSecondaryButton:hover {
+    border-color: rgb(var(--brand-blue-rgb) / 0.22);
+    background: rgb(var(--brand-blue-rgb) / 0.04);
+}
+
+.dispatchStatusBanner {
+    border-radius: 12px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    align-items: flex-start;
+    border: 1px solid var(--border);
+}
+
+.dispatchStatusBanner svg {
+    margin-top: 2px;
+}
+
+.dispatchStatusBanner strong {
+    display: block;
+    font-size: 0.82rem;
+}
+
+.dispatchStatusBanner span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.76rem;
+    color: var(--secondary);
+    word-break: break-word;
+}
+
+.dispatchStatusSending {
+    background: rgb(var(--brand-blue-rgb) / 0.05);
+    border-color: rgb(var(--brand-blue-rgb) / 0.16);
+    color: var(--brand-blue);
+}
+
+.dispatchStatusSent {
+    background: rgb(var(--brand-green-rgb) / 0.05);
+    border-color: rgb(var(--brand-green-rgb) / 0.18);
+    color: #1f6f31;
+}
+
 .timelineHeader {
     display: flex;
     align-items: center;
@@ -1062,6 +1184,223 @@
     line-height: 1.4;
 }
 
+.grdPreviewWrap {
+    display: grid;
+    gap: 12px;
+}
+
+.grdSendBanner {
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    border: 1px solid var(--border);
+}
+
+.grdSendBanner strong {
+    display: block;
+    font-size: 0.85rem;
+}
+
+.grdSendBanner span {
+    display: block;
+    margin-top: 3px;
+    color: var(--secondary);
+    font-size: 0.78rem;
+    word-break: break-word;
+}
+
+.grdSendBannerSending {
+    background: linear-gradient(180deg, rgb(var(--brand-blue-rgb) / 0.05), rgb(var(--brand-blue-rgb) / 0.03));
+    border-color: rgb(var(--brand-blue-rgb) / 0.18);
+    color: var(--brand-blue);
+}
+
+.grdSendBannerSent {
+    background: linear-gradient(180deg, rgb(var(--brand-green-rgb) / 0.06), rgb(var(--brand-green-rgb) / 0.03));
+    border-color: rgb(var(--brand-green-rgb) / 0.18);
+    color: #1f6f31;
+}
+
+.grdSheet {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 14px 26px rgb(0 18 33 / 0.08);
+    padding: 14px;
+    display: grid;
+    gap: 10px;
+}
+
+.grdProjectLine {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 8px 10px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.grdHeaderRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.grdMainTitle {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: var(--text-main);
+    text-align: center;
+    line-height: 1.2;
+}
+
+.grdNumberBox {
+    border: 1px solid rgb(var(--primary-rgb) / 0.18);
+    border-radius: 10px;
+    background: rgb(var(--primary-rgb) / 0.04);
+    color: var(--primary);
+    font-weight: 700;
+    padding: 10px 12px;
+    white-space: nowrap;
+    align-self: center;
+}
+
+.grdFinalidadeLine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 8px 10px;
+}
+
+.grdFinalidadeLine span {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.grdFinalidadeLine strong {
+    color: #9a5a03;
+    background: var(--warning-bg);
+    border: 1px solid rgb(198 122 12 / 0.18);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+}
+
+.grdPartyRows {
+    display: grid;
+    gap: 8px;
+}
+
+.grdPartyRow {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+}
+
+.grdPartyRow span {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.grdPartyRow strong {
+    color: var(--text-main);
+}
+
+.grdPartyRow em {
+    color: var(--text-muted);
+    font-style: normal;
+    text-align: right;
+    font-size: 0.76rem;
+}
+
+.grdDisciplineTitle {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #f9fbfd, #f4f8fb);
+    padding: 8px 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--brand-blue);
+    text-align: center;
+}
+
+.grdTableWrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: auto;
+    background: white;
+}
+
+.grdTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+}
+
+.grdTable th,
+.grdTable td {
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 8px;
+    font-size: 0.78rem;
+    vertical-align: top;
+}
+
+.grdTable th:last-child,
+.grdTable td:last-child {
+    border-right: none;
+}
+
+.grdTable thead th {
+    background: #f6fafc;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.grdTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.grdObsBlock {
+    border: 1px dashed var(--border-strong);
+    border-radius: 10px;
+    background: #fcfdff;
+    padding: 10px;
+    color: var(--secondary);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+.grdObsBlock strong {
+    color: var(--text-main);
+}
+
 @media (max-width: 1320px) {
     .metricsGrid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1106,6 +1445,15 @@
     .filterStatsRow {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .dispatchPanelHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dispatchTag {
+        align-self: flex-start;
     }
 }
 
@@ -1155,5 +1503,32 @@
     .timelineRow {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .dispatchActions {
+        flex-direction: column;
+    }
+
+    .dispatchPrimaryButton,
+    .dispatchSecondaryButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .grdHeaderRow {
+        grid-template-columns: 1fr;
+    }
+
+    .grdNumberBox {
+        white-space: normal;
+    }
+
+    .grdPartyRow {
+        grid-template-columns: 1fr;
+        align-items: flex-start;
+    }
+
+    .grdPartyRow em {
+        text-align: left;
     }
 }

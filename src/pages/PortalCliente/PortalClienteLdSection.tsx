@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     BarChart3,
     CalendarClock,
+    CheckCircle2,
     CircleAlert,
     FileSpreadsheet,
     GitBranch,
     ListFilter,
+    Mail,
     Search,
+    Send,
     Timer,
 } from 'lucide-react';
 import {
@@ -15,6 +18,7 @@ import {
     LdRevisionCycle,
     portalClienteLdData,
 } from '../../data/portalClienteLdData';
+import { Modal } from '../../components/common/Modal';
 import styles from './PortalClienteLdSection.module.css';
 
 type StatusTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
@@ -22,6 +26,7 @@ type QuickFilter = 'todos' | 'pendencias' | 'atrasados';
 type DisciplinaFiltro = 'TODAS' | 'CIV' | 'EMEC' | 'SPCS';
 type CurvaDisciplina = 'GERAL' | 'CIV' | 'EMEC' | 'SPCS';
 type MainViewTab = 'visao-geral' | 'lista-documentos';
+type SimulatedSendStatus = 'sending' | 'sent';
 
 interface PortalClienteLdSectionProps {
     projetoLabel?: string;
@@ -37,6 +42,31 @@ interface DocumentoInsight {
     diasSemRetorno: number | null;
     atrasado: boolean;
     atrasoMotivo: 'retorno' | 'emissao' | null;
+}
+
+interface SimulatedGrdDispatch {
+    id: string;
+    documentoId: string;
+    sequencia: number;
+    grdNumeroCompleto: string;
+    grdCodigoCurto: string;
+    arquivoPdfNome: string;
+    projetoCabecalho: string;
+    disciplinaTitulo: string;
+    finalidade: string;
+    remetente: string;
+    destinatario: string;
+    destinatarioEmail: string;
+    dataEmissao: string;
+    observacao: string;
+    statusEnvio: SimulatedSendStatus;
+    itens: Array<{
+        item: number;
+        numeroDocumento: string;
+        descricao: string;
+        revisao: string;
+        finalidade: string;
+    }>;
 }
 
 const DEMO_REFERENCE_DATE = new Date('2026-02-23T00:00:00');
@@ -61,6 +91,18 @@ const CURVA_DISCIPLINA_OPTIONS: Array<{ value: CurvaDisciplina; label: string }>
     { value: 'SPCS', label: 'SPCS' },
 ];
 
+const GRD_DISCIPLINA_TITULO: Record<string, string> = {
+    CIV: 'PROJETO CIVIL',
+    EMEC: 'PROJETO ELETROMECÂNICO',
+    SPCS: 'PROJETO ELÉTRICO',
+};
+
+const GRD_CLIENTE_NOME = 'AXIA';
+const GRD_CLIENTE_EMAIL = 'documentos@axia.demo';
+const GRD_REMETENTE = 'ENSISTE';
+const GRD_PROJECT_HEADER = 'SE CHARQUEADAS 230/69kV';
+const GRD_SEQUENCE_FLOOR = 27;
+
 const safeParseDate = (value: string | null | undefined) => {
     if (!value) return null;
     const parsed = new Date(`${value}T00:00:00`);
@@ -81,6 +123,16 @@ const daysBetween = (start: Date, end: Date) => {
     const ms = end.getTime() - start.getTime();
     return Math.floor(ms / (1000 * 60 * 60 * 24));
 };
+
+const extractGrdSequence = (value: string | null | undefined) => {
+    if (!value) return null;
+    const match = value.match(/GRD[-\\s](\\d{1,4})/i);
+    if (!match) return null;
+    const seq = Number(match[1]);
+    return Number.isFinite(seq) ? seq : null;
+};
+
+const padSequence = (seq: number) => String(seq).padStart(3, '0');
 
 const getStatusTone = (status: string | null | undefined): StatusTone => {
     switch (status) {
@@ -350,6 +402,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
     contexto = 'interno',
 }) => {
     const isInterno = contexto === 'interno';
+    const grdSendTimersRef = useRef<number[]>([]);
     const [busca, setBusca] = useState('');
     const [filtroDisciplina, setFiltroDisciplina] = useState<DisciplinaFiltro>('TODAS');
     const [filtroStatus, setFiltroStatus] = useState<string>('TODOS');
@@ -357,8 +410,54 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
     const [curvaDisciplina, setCurvaDisciplina] = useState<CurvaDisciplina>('GERAL');
     const [activeTab, setActiveTab] = useState<MainViewTab>('visao-geral');
     const [selectedDocumentoId, setSelectedDocumentoId] = useState<string | null>(null);
+    const [grdDispatchesByDocId, setGrdDispatchesByDocId] = useState<Record<string, SimulatedGrdDispatch>>({});
+    const [previewGrdDocId, setPreviewGrdDocId] = useState<string | null>(null);
 
-    const docs = portalClienteLdData.documentos;
+    useEffect(() => {
+        return () => {
+            grdSendTimersRef.current.forEach((timerId) => window.clearTimeout(timerId));
+            grdSendTimersRef.current = [];
+        };
+    }, []);
+
+    const baseExcelGrdMax = useMemo(() => {
+        let max = GRD_SEQUENCE_FLOOR;
+        for (const doc of portalClienteLdData.documentos) {
+            const direct = extractGrdSequence(doc.ultimaGrd);
+            if (direct && direct > max) max = direct;
+            for (const ciclo of doc.ciclos) {
+                const fromCycle = extractGrdSequence(ciclo.grd);
+                if (fromCycle && fromCycle > max) max = fromCycle;
+            }
+        }
+        return max;
+    }, []);
+
+    const docs = portalClienteLdData.documentos.map((doc) => {
+        const grdDispatch = grdDispatchesByDocId[doc.id];
+        if (!grdDispatch) return doc;
+
+        const cicloAutomatico: LdRevisionCycle = {
+            ordem: doc.ciclos.length + 1,
+            copias: 'Dig.',
+            revisao: doc.revisaoAtual ?? '0',
+            envioData: grdDispatch.dataEmissao,
+            grd: grdDispatch.grdCodigoCurto,
+            statusEnvio: grdDispatch.finalidade,
+            retornoData: null,
+            carta: 'GRD automática (portal cliente)',
+            statusRetorno: null,
+            prazoDias: null,
+        };
+
+        return {
+            ...doc,
+            statusAtual: grdDispatch.finalidade,
+            statusLabel: portalClienteLdData.statusLegend[grdDispatch.finalidade] ?? grdDispatch.finalidade,
+            ultimaGrd: grdDispatch.grdCodigoCurto,
+            ciclos: [...doc.ciclos, cicloAutomatico],
+        };
+    });
     const insights = docs.map(buildDocumentoInsight);
 
     const totalDocs = insights.length;
@@ -491,6 +590,68 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
         insightsFiltrados.find((item) => item.doc.id === selectedDocumentoId) ??
         insights.find((item) => item.doc.id === selectedDocumentoId) ??
         null;
+
+    const grdPreviewSelecionada = previewGrdDocId ? grdDispatchesByDocId[previewGrdDocId] ?? null : null;
+    const grdDoDocumentoSelecionado = insightSelecionado ? grdDispatchesByDocId[insightSelecionado.doc.id] ?? null : null;
+
+    const handleGerarGrdEPostar = (doc: LdDocumento) => {
+        const generatedSequences = Object.values(grdDispatchesByDocId).map((dispatch) => dispatch.sequencia);
+        const nextSequence = Math.max(baseExcelGrdMax, ...generatedSequences, GRD_SEQUENCE_FLOOR) + 1;
+        const seqPadded = padSequence(nextSequence);
+        const finalidade = 'LE';
+        const disciplina = doc.disciplina ?? 'EMEC';
+        const disciplinaTitulo = GRD_DISCIPLINA_TITULO[disciplina] ?? 'PROJETO BÁSICO';
+        const dataEmissao = DEMO_REFERENCE_DATE.toISOString().slice(0, 10);
+        const grdNumeroCompleto = `GRD Nº 360-E-CHA-${seqPadded}`;
+        const grdCodigoCurto = `GRD-${seqPadded}`;
+        const dispatch: SimulatedGrdDispatch = {
+            id: `grd-${doc.id}-${Date.now()}`,
+            documentoId: doc.id,
+            sequencia: nextSequence,
+            grdNumeroCompleto,
+            grdCodigoCurto,
+            arquivoPdfNome: `GRD 360-E-CHA-${seqPadded} (${disciplina}).pdf`,
+            projetoCabecalho: GRD_PROJECT_HEADER,
+            disciplinaTitulo,
+            finalidade,
+            remetente: GRD_REMETENTE,
+            destinatario: GRD_CLIENTE_NOME,
+            destinatarioEmail: GRD_CLIENTE_EMAIL,
+            dataEmissao,
+            observacao: `Documento concluído e postado no sistema do cliente. GRD enviada automaticamente para ciência (${disciplina}).`,
+            statusEnvio: 'sending',
+            itens: [
+                {
+                    item: 1,
+                    numeroDocumento: doc.codigo,
+                    descricao: doc.descricao,
+                    revisao: doc.revisaoAtual ?? '0',
+                    finalidade,
+                },
+            ],
+        };
+
+        setGrdDispatchesByDocId((prev) => ({
+            ...prev,
+            [doc.id]: dispatch,
+        }));
+        setPreviewGrdDocId(doc.id);
+
+        const timerId = window.setTimeout(() => {
+            setGrdDispatchesByDocId((prev) => {
+                const current = prev[doc.id];
+                if (!current || current.id !== dispatch.id) return prev;
+                return {
+                    ...prev,
+                    [doc.id]: {
+                        ...current,
+                        statusEnvio: 'sent',
+                    },
+                };
+            });
+        }, 1400);
+        grdSendTimersRef.current.push(timerId);
+    };
 
     const distributionStatusItems = Object.entries(statusCounts)
         .sort((a, b) => b[1] - a[1])
@@ -898,6 +1059,73 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                                     </div>
                                 )}
 
+                                {isInterno && (
+                                    <div className={styles.dispatchPanel}>
+                                        <div className={styles.dispatchPanelHeader}>
+                                            <div>
+                                                <strong>Postagem no sistema do cliente + GRD automática</strong>
+                                                <p>
+                                                    Ao concluir o documento, o sistema gera a Guia de Remessa de Documentos (GRD),
+                                                    preenche os campos do modelo e envia para ciência do cliente.
+                                                </p>
+                                            </div>
+                                            {grdDoDocumentoSelecionado && (
+                                                <span className={styles.dispatchTag}>{grdDoDocumentoSelecionado.grdCodigoCurto}</span>
+                                            )}
+                                        </div>
+
+                                        <div className={styles.dispatchActions}>
+                                            <button
+                                                type="button"
+                                                className={styles.dispatchPrimaryButton}
+                                                onClick={() => handleGerarGrdEPostar(insightSelecionado.doc)}
+                                            >
+                                                <Send size={15} />
+                                                {grdDoDocumentoSelecionado
+                                                    ? 'Gerar nova GRD e reenviar ao cliente'
+                                                    : 'Marcar concluído, postar e gerar GRD'}
+                                            </button>
+
+                                            {grdDoDocumentoSelecionado && (
+                                                <button
+                                                    type="button"
+                                                    className={styles.dispatchSecondaryButton}
+                                                    onClick={() => setPreviewGrdDocId(insightSelecionado.doc.id)}
+                                                >
+                                                    <FileSpreadsheet size={15} />
+                                                    Exibir guia preenchida
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {grdDoDocumentoSelecionado && (
+                                            <div
+                                                className={`${styles.dispatchStatusBanner} ${
+                                                    grdDoDocumentoSelecionado.statusEnvio === 'sending'
+                                                        ? styles.dispatchStatusSending
+                                                        : styles.dispatchStatusSent
+                                                }`}
+                                            >
+                                                {grdDoDocumentoSelecionado.statusEnvio === 'sending' ? (
+                                                    <Send size={15} />
+                                                ) : (
+                                                    <CheckCircle2 size={15} />
+                                                )}
+                                                <div>
+                                                    <strong>
+                                                        {grdDoDocumentoSelecionado.statusEnvio === 'sending'
+                                                            ? 'Enviando como PDF para e-mail do cliente...'
+                                                            : 'PDF enviado para o e-mail do cliente (simulação demo)'}
+                                                    </strong>
+                                                    <span>
+                                                        {grdDoDocumentoSelecionado.destinatarioEmail} • {grdDoDocumentoSelecionado.arquivoPdfNome}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
                                 <div className={styles.timelineHeader}>
                                     <h5>
                                         <GitBranch size={15} />
@@ -998,6 +1226,91 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                     <div key={obs}>{obs}</div>
                 ))}
             </footer>
+
+            <Modal
+                isOpen={Boolean(grdPreviewSelecionada)}
+                onClose={() => setPreviewGrdDocId(null)}
+                title="GRD automática (preview da guia preenchida)"
+            >
+                {grdPreviewSelecionada && (
+                    <div className={styles.grdPreviewWrap}>
+                        <div
+                            className={`${styles.grdSendBanner} ${
+                                grdPreviewSelecionada.statusEnvio === 'sending' ? styles.grdSendBannerSending : styles.grdSendBannerSent
+                            }`}
+                        >
+                            {grdPreviewSelecionada.statusEnvio === 'sending' ? <Send size={16} /> : <Mail size={16} />}
+                            <div>
+                                <strong>
+                                    {grdPreviewSelecionada.statusEnvio === 'sending'
+                                        ? 'Enviando como PDF para e-mail do cliente...'
+                                        : 'GRD enviada em PDF para o e-mail do cliente (simulação demo)'}
+                                </strong>
+                                <span>
+                                    {grdPreviewSelecionada.destinatarioEmail} • arquivo {grdPreviewSelecionada.arquivoPdfNome}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className={styles.grdSheet}>
+                            <div className={styles.grdProjectLine}>{grdPreviewSelecionada.projetoCabecalho}</div>
+                            <div className={styles.grdHeaderRow}>
+                                <div className={styles.grdMainTitle}>GUIA DE REMESSA DE DOCUMENTOS</div>
+                                <div className={styles.grdNumberBox}>{grdPreviewSelecionada.grdNumeroCompleto}</div>
+                            </div>
+
+                            <div className={styles.grdFinalidadeLine}>
+                                <span>FINALIDADE</span>
+                                <strong>{grdPreviewSelecionada.finalidade}</strong>
+                            </div>
+
+                            <div className={styles.grdPartyRows}>
+                                <div className={styles.grdPartyRow}>
+                                    <span>Remetente:</span>
+                                    <strong>{grdPreviewSelecionada.remetente}</strong>
+                                    <em>Data: {formatDate(grdPreviewSelecionada.dataEmissao)}</em>
+                                </div>
+                                <div className={styles.grdPartyRow}>
+                                    <span>Destinatário:</span>
+                                    <strong>{grdPreviewSelecionada.destinatario}</strong>
+                                    <em>{grdPreviewSelecionada.destinatarioEmail}</em>
+                                </div>
+                            </div>
+
+                            <div className={styles.grdDisciplineTitle}>{grdPreviewSelecionada.disciplinaTitulo}</div>
+
+                            <div className={styles.grdTableWrap}>
+                                <table className={styles.grdTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>N° Documento</th>
+                                            <th>Descrição</th>
+                                            <th>Rev.</th>
+                                            <th>Finalidade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {grdPreviewSelecionada.itens.map((item) => (
+                                            <tr key={`${grdPreviewSelecionada.id}-${item.item}`}>
+                                                <td>{item.item}</td>
+                                                <td>{item.numeroDocumento}</td>
+                                                <td>{item.descricao}</td>
+                                                <td>{item.revisao}</td>
+                                                <td>{item.finalidade}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className={styles.grdObsBlock}>
+                                <strong>Obs.:</strong> {grdPreviewSelecionada.observacao}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 };
