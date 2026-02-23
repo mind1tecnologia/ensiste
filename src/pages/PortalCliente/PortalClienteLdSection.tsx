@@ -20,6 +20,7 @@ type StatusTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
 type QuickFilter = 'todos' | 'pendencias' | 'atrasados';
 type DisciplinaFiltro = 'TODAS' | 'CIV' | 'EMEC' | 'SPCS';
 type CurvaDisciplina = 'GERAL' | 'CIV' | 'EMEC' | 'SPCS';
+type MainViewTab = 'visao-geral' | 'lista-documentos';
 
 interface PortalClienteLdSectionProps {
     projetoLabel?: string;
@@ -353,6 +354,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
     const [filtroStatus, setFiltroStatus] = useState<string>('TODOS');
     const [quickFilter, setQuickFilter] = useState<QuickFilter>('todos');
     const [curvaDisciplina, setCurvaDisciplina] = useState<CurvaDisciplina>('GERAL');
+    const [activeTab, setActiveTab] = useState<MainViewTab>('visao-geral');
     const [selectedDocumentoId, setSelectedDocumentoId] = useState<string | null>(null);
 
     const docs = portalClienteLdData.documentos;
@@ -550,75 +552,103 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                 <MetricTile label="Próximos envios (15d)" value={proximosEnvios15Dias} tone="info" help="Com previsão futura próxima" />
             </div>
 
-            <div className={styles.analyticsGrid}>
-                <div className={styles.analyticsColumn}>
-                    <DistributionList
-                        title="Distribuição por status atual"
-                        subtitle="Status calculado pela planilha"
-                        items={distributionStatusItems}
-                    />
-                    <DistributionList
-                        title="Distribuição por disciplina"
-                        subtitle="CIV / EMEC / SPCS"
-                        items={distributionDisciplinaItems}
-                    />
-                </div>
-
-                <div className={styles.analyticsColumn}>
-                    <section className={styles.subCard}>
-                        <div className={styles.subCardHeader}>
-                            <h3>Curvas de acompanhamento (aba Acompanhamento)</h3>
-                            <div className={styles.disciplinaTabs} role="tablist" aria-label="Selecionar disciplina das curvas">
-                                {CURVA_DISCIPLINA_OPTIONS.map((option) => (
-                                    <button
-                                        key={option.value}
-                                        type="button"
-                                        role="tab"
-                                        aria-selected={curvaDisciplina === option.value}
-                                        className={curvaDisciplina === option.value ? styles.tabActive : styles.tabButton}
-                                        onClick={() => setCurvaDisciplina(option.value)}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className={styles.curveMetaStrip}>
-                            <div>
-                                <span>Disciplina</span>
-                                <strong>{curvaSelecionada?.nome ?? '—'}</strong>
-                            </div>
-                            <div>
-                                <span>Média revisão</span>
-                                <strong>{curvaSelecionada ? `${curvaSelecionada.mediaRevisaoDias} dias` : '—'}</strong>
-                            </div>
-                            <div>
-                                <span>Média análise</span>
-                                <strong>{curvaSelecionada ? `${curvaSelecionada.mediaAnaliseDias} dias` : '—'}</strong>
-                            </div>
-                        </div>
-                    </section>
-
-                    {curvaSelecionada && (
-                        <>
-                            <CurveCard
-                                title="Emissão (Planejado x Realizado)"
-                                months={curvaSelecionada.meses}
-                                planned={curvaSelecionada.emissao.planejado}
-                                actual={curvaSelecionada.emissao.realizado}
-                            />
-                            <CurveCard
-                                title="Aprovação (Planejado x Realizado)"
-                                months={curvaSelecionada.meses}
-                                planned={curvaSelecionada.aprovacao.planejado}
-                                actual={curvaSelecionada.aprovacao.realizado}
-                            />
-                        </>
-                    )}
-                </div>
+            <div className={styles.mainTabs} role="tablist" aria-label="Navegação do módulo de controle documental">
+                <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === 'visao-geral'}
+                    className={activeTab === 'visao-geral' ? styles.mainTabActive : styles.mainTabButton}
+                    onClick={() => setActiveTab('visao-geral')}
+                >
+                    Visão Geral
+                    <small>KPIs, distribuição e curvas</small>
+                </button>
+                <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === 'lista-documentos'}
+                    className={activeTab === 'lista-documentos' ? styles.mainTabActive : styles.mainTabButton}
+                    onClick={() => setActiveTab('lista-documentos')}
+                >
+                    Lista de Documentos
+                    <small>
+                        {insightsFiltrados.length} item(ns) no filtro
+                    </small>
+                </button>
             </div>
 
+            {activeTab === 'visao-geral' && (
+                <div className={styles.analyticsGrid}>
+                    <div className={styles.analyticsColumn}>
+                        <DistributionList
+                            title="Distribuição por status atual"
+                            subtitle="Status calculado pela planilha"
+                            items={distributionStatusItems}
+                        />
+                        <DistributionList
+                            title="Distribuição por disciplina"
+                            subtitle="CIV / EMEC / SPCS"
+                            items={distributionDisciplinaItems}
+                        />
+                    </div>
+
+                    <div className={styles.analyticsColumn}>
+                        <section className={styles.subCard}>
+                            <div className={styles.subCardHeader}>
+                                <h3>Curvas de acompanhamento (aba Acompanhamento)</h3>
+                                <div className={styles.disciplinaTabs} role="tablist" aria-label="Selecionar disciplina das curvas">
+                                    {CURVA_DISCIPLINA_OPTIONS.map((option) => (
+                                        <button
+                                            key={option.value}
+                                            type="button"
+                                            role="tab"
+                                            aria-selected={curvaDisciplina === option.value}
+                                            className={curvaDisciplina === option.value ? styles.tabActive : styles.tabButton}
+                                            onClick={() => setCurvaDisciplina(option.value)}
+                                        >
+                                            {option.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className={styles.curveMetaStrip}>
+                                <div>
+                                    <span>Disciplina</span>
+                                    <strong>{curvaSelecionada?.nome ?? '—'}</strong>
+                                </div>
+                                <div>
+                                    <span>Média revisão</span>
+                                    <strong>{curvaSelecionada ? `${curvaSelecionada.mediaRevisaoDias} dias` : '—'}</strong>
+                                </div>
+                                <div>
+                                    <span>Média análise</span>
+                                    <strong>{curvaSelecionada ? `${curvaSelecionada.mediaAnaliseDias} dias` : '—'}</strong>
+                                </div>
+                            </div>
+                        </section>
+
+                        {curvaSelecionada && (
+                            <>
+                                <CurveCard
+                                    title="Emissão (Planejado x Realizado)"
+                                    months={curvaSelecionada.meses}
+                                    planned={curvaSelecionada.emissao.planejado}
+                                    actual={curvaSelecionada.emissao.realizado}
+                                />
+                                <CurveCard
+                                    title="Aprovação (Planejado x Realizado)"
+                                    months={curvaSelecionada.meses}
+                                    planned={curvaSelecionada.aprovacao.planejado}
+                                    actual={curvaSelecionada.aprovacao.realizado}
+                                />
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {activeTab === 'lista-documentos' && (
             <section className={styles.subCard}>
                 <div className={styles.subCardHeader}>
                     <h3>Lista de documentos (filtros + status atual + histórico por documento)</h3>
@@ -917,6 +947,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                     </aside>
                 </div>
             </section>
+            )}
 
             <footer className={styles.footerNotes}>
                 <div>

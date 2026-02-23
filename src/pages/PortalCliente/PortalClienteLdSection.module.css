@@ -134,6 +134,50 @@
     gap: 10px;
 }
 
+.mainTabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.mainTabButton,
+.mainTabActive {
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--secondary);
+    padding: 11px 12px;
+    text-align: left;
+    display: grid;
+    gap: 3px;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mainTabButton {
+    box-shadow: var(--shadow-sm);
+}
+
+.mainTabButton:hover {
+    border-color: rgb(var(--brand-blue-rgb) / 0.22);
+    background: #fff;
+}
+
+.mainTabButton small,
+.mainTabActive small {
+    color: inherit;
+    opacity: 0.9;
+    font-size: 0.75rem;
+}
+
+.mainTabActive {
+    border-color: rgb(var(--brand-blue-rgb) / 0.2);
+    background:
+        radial-gradient(circle at 90% 14%, rgb(var(--brand-blue-rgb) / 0.08), transparent 52%),
+        linear-gradient(180deg, rgb(var(--brand-blue-rgb) / 0.05), #ffffff);
+    color: var(--brand-blue);
+    box-shadow: 0 10px 20px rgb(var(--brand-blue-rgb) / 0.08);
+}
+
 .analyticsColumn {
     display: grid;
     gap: 10px;
@@ -855,6 +899,10 @@
         grid-template-columns: 1fr;
     }
 
+    .mainTabs {
+        grid-template-columns: 1fr;
+    }
+
     .filterBar {
         grid-template-columns: 1fr 1fr;
     }
@@ -904,4 +952,3 @@
         align-items: flex-start;
     }
 }
-
