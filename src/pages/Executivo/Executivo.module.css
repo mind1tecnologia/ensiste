@@ -1,0 +1,237 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pageTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 4px 0;
+}
+
+.pageSubtitle {
+    font-size: 1rem;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.iaButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--brand-blue));
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgb(var(--primary-rgb) / 0.22);
+    transition: all 0.2s;
+}
+
+.iaButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgb(var(--primary-rgb) / 0.28);
+}
+
+.kpiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.tablesContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 1100px) {
+    .tablesContainer {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tableCard {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.tableHeader {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tableHeader h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: 12px 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary);
+    text-transform: uppercase;
+    background-color: var(--surface-hover);
+    border-bottom: 1px solid var(--border);
+}
+
+.table td {
+    padding: 16px 24px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: var(--surface-hover);
+}
+
+.textRight {
+    text-align: right !important;
+}
+
+.muted {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.blockReason {
+    font-size: 0.8rem;
+    color: #b91c1c;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.blockReason::before {
+    content: '↳';
+    color: #f87171;
+}
+
+.emptyState {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 32px !important;
+}
+
+.phaseChart {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.phaseRow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.phaseInfo {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.progressBar {
+    height: 8px;
+    background-color: var(--border);
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 1s ease-out;
+}
+
+/* Modal Content */
+.iaModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.iaContext {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    line-height: 1.5;
+    margin: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.iaSection h4 {
+    font-size: 1.05rem;
+    color: var(--text-main);
+    margin: 0 0 12px 0;
+}
+
+.iaList {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.iaList li {
+    margin-bottom: 8px;
+}
+
+.iaList strong {
+    color: var(--text-main);
+}
+
+.iaActionCard {
+    background-color: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.iaActionCard strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #4338ca;
+    margin-bottom: 6px;
+}
+
+.iaActionCard p {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    margin: 0;
+    line-height: 1.4;
+}

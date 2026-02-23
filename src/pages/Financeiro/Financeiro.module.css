@@ -1,0 +1,357 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.pageTitle {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 4px 0;
+}
+
+.pageSubtitle {
+    font-size: 1rem;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgb(var(--brand-blue-rgb) / 0.22);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.actionButton:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.actionButtonDisabled {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--surface-hover);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: not-allowed;
+}
+
+.layoutGrid {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 1100px) {
+    .layoutGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mainColumn,
+.sideColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tabelas */
+.tableCard {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.tableHeader {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.tableHeader h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: 12px 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary);
+    text-transform: uppercase;
+    background-color: var(--surface-hover);
+    border-bottom: 1px solid var(--border);
+}
+
+.table td {
+    padding: 16px 24px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: var(--surface-hover);
+}
+
+.rowSelected {
+    background-color: rgb(var(--brand-blue-rgb) / 0.05) !important;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.muted {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.regra {
+    font-size: 0.85rem;
+    color: var(--primary);
+    background-color: var(--info-bg);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    font-weight: 500;
+}
+
+.emptyState {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 40px !important;
+}
+
+/* Summary Card */
+.summaryCard {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summaryCard h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.summaryRowTotal {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.divider {
+    height: 1px;
+    background-color: var(--border);
+    margin: 4px 0;
+}
+
+.summaryCard h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--secondary);
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.checkItem input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    margin-top: 2px;
+}
+
+/* Modal */
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.draftAlert {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--success-bg);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 16px;
+    border-radius: var(--radius-md);
+}
+
+.draftIcon {
+    color: var(--success);
+}
+
+.draftAlert strong {
+    display: block;
+    color: #065f46;
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+}
+
+.draftAlert p {
+    margin: 0;
+    color: #047857;
+    font-size: 0.9rem;
+}
+
+.draftList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.draftItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-hover);
+}
+
+.draftItemIcon {
+    color: var(--secondary);
+}
+
+.draftItemDesc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.draftItemDesc strong {
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.draftItemDesc span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.draftItemValue {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.draftFooter {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.draftTotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.draftTotal span {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    font-weight: 500;
+}
+
+.draftTotal strong {
+    font-size: 1.4rem;
+    color: var(--primary);
+}
+
+.confirmButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--success);
+    color: white;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.confirmButton:hover {
+    background-color: #059669;
+}

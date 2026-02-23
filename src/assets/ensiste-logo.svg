@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 180" role="img" aria-labelledby="title desc">
+  <title id="title">Logotipo Ensiste Grupo im3</title>
+  <desc id="desc">Logotipo ENSISTE em branco com traço vermelho e assinatura Grupo im3.</desc>
+  <g fill="#ffffff">
+    <rect x="32" y="34" width="52" height="10" rx="2" />
+    <rect x="32" y="57" width="52" height="10" rx="2" />
+    <rect x="32" y="80" width="52" height="10" rx="2" />
+
+    <path d="M98 34h14l23 31V34h14v56h-13L112 58v32H98z" />
+    <path d="M156 74h14c0 4 3 7 8 7h14c4 0 7-2 7-5 0-4-3-5-9-6l-14-2c-10-1-19-5-19-17 0-10 8-17 20-17h16c13 0 20 7 20 18h-14c0-4-2-6-7-6h-14c-4 0-7 2-7 5 0 4 3 5 9 6l14 2c12 2 19 7 19 17 0 11-9 18-22 18h-16c-14 0-21-7-21-20z" />
+    <path d="M220 34h49v12h-35v10h32v11h-32v11h35v12h-49z" />
+    <path d="M276 34h54v12h-20v44h-14V46h-20z" />
+    <path d="M335 74h14c0 4 3 7 8 7h14c4 0 7-2 7-5 0-4-3-5-9-6l-14-2c-10-1-19-5-19-17 0-10 8-17 20-17h16c13 0 20 7 20 18h-14c0-4-2-6-7-6h-14c-4 0-7 2-7 5 0 4 3 5 9 6l14 2c12 2 19 7 19 17 0 11-9 18-22 18h-16c-14 0-21-7-21-20z" />
+    <path d="M399 34h49v12h-35v10h32v11h-32v11h35v12h-49z" />
+  </g>
+
+  <path
+    d="M48 117 C 145 129, 255 129, 392 105"
+    fill="none"
+    stroke="#BE202E"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+
+  <g fill="#ffffff">
+    <text x="236" y="156" font-family="Roboto, Arial, sans-serif" font-size="18" font-weight="300">Grupo</text>
+    <text x="302" y="156" font-family="Montserrat, Arial, sans-serif" font-size="36" font-weight="700">im3</text>
+  </g>
+</svg>

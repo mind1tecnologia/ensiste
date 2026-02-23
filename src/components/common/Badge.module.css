@@ -1,0 +1,40 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.success {
+    background-color: var(--success-bg);
+    color: #1f6f31;
+    border-color: rgb(var(--brand-green-rgb) / 0.2);
+}
+
+.info {
+    background-color: var(--info-bg);
+    color: var(--brand-blue);
+    border-color: rgb(var(--brand-blue-rgb) / 0.15);
+}
+
+.warning {
+    background-color: var(--warning-bg);
+    color: #b45309;
+}
+
+.danger {
+    background-color: var(--danger-bg);
+    color: var(--primary);
+    border-color: rgb(var(--primary-rgb) / 0.18);
+}
+
+.default {
+    background-color: var(--surface-alt);
+    color: #475569;
+    border-color: var(--border);
+}

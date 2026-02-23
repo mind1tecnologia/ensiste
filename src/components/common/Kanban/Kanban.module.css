@@ -1,0 +1,174 @@
+.boardContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 16px;
+}
+
+.columns {
+    display: flex;
+    gap: 20px;
+    height: 100%;
+    min-height: 500px;
+}
+
+.columnContainer {
+    background-color: var(--surface-hover);
+    border-radius: var(--radius-lg);
+    width: 320px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    border: 1px solid var(--border);
+}
+
+.columnHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.columnTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.columnCount {
+    background-color: var(--border);
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
+
+.columnDropZone {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 150px;
+}
+
+/* Kanban Card Styles */
+
+.card {
+    background-color: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    cursor: grab;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    touch-action: none;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #cbd5e1;
+}
+
+.cardOverlay {
+    box-shadow: var(--shadow-lg);
+    cursor: grabbing;
+    z-index: 999;
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.cardPlaceholder {
+    border: 2px dashed var(--border);
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: var(--radius-md);
+    height: 140px;
+    opacity: 0.5;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardProject {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--secondary);
+}
+
+.cardTitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.cardClient {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.blockage {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--danger-bg);
+    color: #b91c1c;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.cardValue {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.aging {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 9999px;
+}
+
+.agingNormal {
+    background-color: #f1f5f9;
+    color: var(--secondary);
+}
+
+.agingWarning {
+    background-color: var(--warning-bg);
+    color: #b45309;
+}
+
+.agingDanger {
+    background-color: var(--danger-bg);
+    color: #b91c1c;
+}

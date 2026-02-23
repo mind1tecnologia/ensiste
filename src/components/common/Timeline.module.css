@@ -1,0 +1,68 @@
+.timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+}
+
+.item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    min-height: 60px;
+}
+
+.markerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16px;
+}
+
+.marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--primary-hover);
+    margin-top: 4px;
+    z-index: 2;
+}
+
+.line {
+    flex: 1;
+    width: 2px;
+    background-color: var(--border);
+    margin-top: 4px;
+    margin-bottom: -4px;
+}
+
+.content {
+    flex: 1;
+    padding-bottom: 24px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.date {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.responsavel {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.descricao {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin: 0;
+}
