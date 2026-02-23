@@ -6,6 +6,7 @@ import {
     FileSpreadsheet,
     GitBranch,
     ListFilter,
+    Search,
     Timer,
 } from 'lucide-react';
 import {
@@ -649,24 +650,28 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
             )}
 
             {activeTab === 'lista-documentos' && (
-            <section className={styles.subCard}>
-                <div className={styles.subCardHeader}>
+            <section className={`${styles.subCard} ${styles.listSection}`}>
+                <div className={`${styles.subCardHeader} ${styles.listSectionHeader}`}>
                     <h3>Lista de documentos (filtros + status atual + histórico por documento)</h3>
-                    <span>{insightsFiltrados.length} item(ns) no filtro</span>
+                    <span className={styles.resultCountChip}>{insightsFiltrados.length} item(ns) no filtro</span>
                 </div>
 
+                <div className={styles.filterSurface}>
                 <div className={styles.filterBar}>
-                    <label className={styles.searchField}>
+                    <label className={`${styles.searchField} ${styles.filterField}`}>
                         <span>Buscar</span>
-                        <input
-                            type="text"
-                            value={busca}
-                            onChange={(event) => setBusca(event.target.value)}
-                            placeholder="Código, descrição, GRD, observação..."
-                        />
+                        <div className={styles.searchInputWrap}>
+                            <Search size={16} className={styles.searchInputIcon} />
+                            <input
+                                type="text"
+                                value={busca}
+                                onChange={(event) => setBusca(event.target.value)}
+                                placeholder="Código, descrição, GRD, observação..."
+                            />
+                        </div>
                     </label>
 
-                    <label className={styles.selectField}>
+                    <label className={`${styles.selectField} ${styles.filterField}`}>
                         <span>Disciplina</span>
                         <select
                             value={filtroDisciplina}
@@ -679,7 +684,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                         </select>
                     </label>
 
-                    <label className={styles.selectField}>
+                    <label className={`${styles.selectField} ${styles.filterField}`}>
                         <span>Status atual</span>
                         <select value={filtroStatus} onChange={(event) => setFiltroStatus(event.target.value)}>
                             <option value="TODOS">Todos</option>
@@ -691,7 +696,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                         </select>
                     </label>
 
-                    <div className={styles.quickFilters}>
+                    <div className={`${styles.quickFilters} ${styles.filterField}`}>
                         <span className={styles.quickFiltersLabel}>
                             <ListFilter size={14} />
                             Recortes rápidos
@@ -701,6 +706,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                                 type="button"
                                 className={quickFilter === 'todos' ? styles.quickButtonActive : styles.quickButton}
                                 onClick={() => setQuickFilter('todos')}
+                                aria-pressed={quickFilter === 'todos'}
                             >
                                 Todos
                             </button>
@@ -708,6 +714,7 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                                 type="button"
                                 className={quickFilter === 'pendencias' ? styles.quickButtonActive : styles.quickButton}
                                 onClick={() => setQuickFilter('pendencias')}
+                                aria-pressed={quickFilter === 'pendencias'}
                             >
                                 Pendentes cliente
                             </button>
@@ -715,14 +722,39 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                                 type="button"
                                 className={quickFilter === 'atrasados' ? styles.quickButtonActive : styles.quickButton}
                                 onClick={() => setQuickFilter('atrasados')}
+                                aria-pressed={quickFilter === 'atrasados'}
                             >
                                 Atrasados
                             </button>
                         </div>
                     </div>
                 </div>
+                <div className={styles.filterStatsRow}>
+                    <span>
+                        <strong>{docsPendentesCliente}</strong> pendentes de retorno/aprovação
+                    </span>
+                    <span>
+                        <strong>{docsAtrasados}</strong> com atraso no recorte da demo
+                    </span>
+                    <span>
+                        Documento selecionado:{' '}
+                        <strong>{insightSelecionado?.doc.codigo ?? '—'}</strong>
+                    </span>
+                </div>
+                </div>
 
                 <div className={styles.tableAndDetail}>
+                    <div className={styles.tablePanel}>
+                        <div className={styles.listPanelHeader}>
+                            <div>
+                                <strong>Lista operacional</strong>
+                                <span>Clique em uma linha para abrir o histórico e os metadados</span>
+                            </div>
+                            <div className={styles.listPanelBadges}>
+                                <span>{filtroDisciplina === 'TODAS' ? 'Todas disciplinas' : filtroDisciplina}</span>
+                                <span>{filtroStatus === 'TODOS' ? 'Todos os status' : filtroStatus}</span>
+                            </div>
+                        </div>
                     <div className={styles.tableWrap}>
                         <table className={styles.table}>
                             <thead>
@@ -807,10 +839,16 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
                             </tbody>
                         </table>
                     </div>
+                    </div>
 
                     <aside className={styles.detailPane}>
                         {insightSelecionado ? (
                             <>
+                                <div className={styles.detailPaneTitle}>
+                                    <span>Documento selecionado</span>
+                                    <small>Visão de controle e rastreabilidade</small>
+                                </div>
+
                                 <div className={styles.detailHeader}>
                                     <div>
                                         <span className={styles.detailEyebrow}>
