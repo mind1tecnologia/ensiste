@@ -585,7 +585,7 @@ export const PortalCliente = () => {
                         highlight={documentosPendentesCliente ? 'warning' : 'info'}
                     />
                     <KpiCard
-                        title="Faturado / Recebido"
+                        title="Faturado / Pago"
                         value={formatMoney(portfolioValorRecebido)}
                         subtitle={`${formatMoney(portfolioValorFaturado)} faturado (${formatMoney(portfolioValorContrato)} contrato)`}
                         icon={<CreditCard size={18} />}
