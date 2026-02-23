@@ -12,6 +12,7 @@ import { Qualidade } from './pages/Qualidade/Qualidade';
 import { Financeiro } from './pages/Financeiro/Financeiro';
 import { Automacoes } from './pages/Automacoes/Automacoes';
 import { DocumentoDetalhe } from './pages/DocumentoDetalhe/DocumentoDetalhe';
+import { PortalCliente } from './pages/PortalCliente/PortalCliente';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/qualidade" element={<Qualidade />} />
             <Route path="/financeiro" element={<Financeiro />} />
             <Route path="/automacoes" element={<Automacoes />} />
+            <Route path="/portal-cliente" element={<PortalCliente />} />
           </Routes>
         </Layout>
       </Router>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Play, LayoutDashboard, KanbanSquare, Zap, Bot, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Play, LayoutDashboard, KanbanSquare, Zap, Bot, ChevronRight, CheckCircle2, Handshake } from 'lucide-react';
 import styles from './Home.module.css';
 
 export const Home = () => {
@@ -91,6 +91,15 @@ export const Home = () => {
                         <div className={styles.moduleText}>
                             <h3>Destravadores de Caixa</h3>
                             <p>Automações de follow-up e cadência de cobrança de clientes.</p>
+                        </div>
+                        <ChevronRight size={20} className={styles.arrowIcon} />
+                    </button>
+
+                    <button className={styles.moduleCard} onClick={() => navigate('/portal-cliente')}>
+                        <Handshake size={32} className={styles.moduleIcon} />
+                        <div className={styles.moduleText}>
+                            <h3>Portal do Cliente (Demo)</h3>
+                            <p>Login virtual com status de projetos, documentos, faturamento e pagamentos.</p>
                         </div>
                         <ChevronRight size={20} className={styles.arrowIcon} />
                     </button>

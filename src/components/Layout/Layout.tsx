@@ -10,7 +10,8 @@ import {
     Bot,
     Play,
     Menu,
-    X
+    X,
+    Handshake
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import clsx from 'clsx';
@@ -43,6 +44,7 @@ export const Layout = ({ children }: LayoutProps) => {
         { path: '/qualidade', label: 'Qualidade & Retrabalho', icon: <ShieldAlert size={20} /> },
         { path: '/financeiro', label: 'Financeiro', icon: <Banknote size={20} /> },
         { path: '/automacoes', label: 'Central de IA', icon: <Bot size={20} /> },
+        { path: '/portal-cliente', label: 'Portal do Cliente', icon: <Handshake size={20} /> },
     ];
 
     useEffect(() => {
