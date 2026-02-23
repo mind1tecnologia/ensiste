@@ -11,7 +11,8 @@ import {
     Play,
     Menu,
     X,
-    Handshake
+    Handshake,
+    FileSpreadsheet
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import clsx from 'clsx';
@@ -40,6 +41,7 @@ export const Layout = ({ children }: LayoutProps) => {
         { path: '/executivo', label: 'Cockpit Executivo', icon: <LayoutDashboard size={20} /> },
         { path: '/operacional', label: 'Cockpit Operacional', icon: <KanbanSquare size={20} /> },
         { path: '/entregaveis', label: 'Entregáveis', icon: <Files size={20} /> },
+        { path: '/controle-documental', label: 'Controle Documental (LD)', icon: <FileSpreadsheet size={20} /> },
         { path: '/destravadores', label: 'Destravadores', icon: <Zap size={20} /> },
         { path: '/qualidade', label: 'Qualidade & Retrabalho', icon: <ShieldAlert size={20} /> },
         { path: '/financeiro', label: 'Financeiro', icon: <Banknote size={20} /> },

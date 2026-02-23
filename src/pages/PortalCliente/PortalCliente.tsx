@@ -14,10 +14,8 @@ import {
 import { useAppContext } from '../../context/AppContext';
 import { KpiCard } from '../../components/common/KpiCard';
 import { Badge } from '../../components/common/Badge';
-import { portalClienteLdData } from '../../data/portalClienteLdData';
 import logoEnsiste from '../../assets/ensiste-logo-anexo.png';
 import { Documento } from '../../types';
-import { PortalClienteLdSection } from './PortalClienteLdSection';
 import styles from './PortalCliente.module.css';
 
 type ProjetoSaude = 'No prazo' | 'Atenção' | 'Crítico' | 'Concluído';
@@ -543,11 +541,6 @@ export const PortalCliente = () => {
     );
 
     const projetosComAlerta = usuarioLogado.projetos.filter((proj) => proj.status === 'Atenção' || proj.status === 'Crítico');
-    const exibirControleLdPlanilha = usuarioLogado.id === 'transmissora-sul';
-    const totalDocumentosKpi = exibirControleLdPlanilha ? portalClienteLdData.documentos.length : totalDocumentos;
-    const documentosPendentesClienteKpi = exibirControleLdPlanilha
-        ? portalClienteLdData.documentos.filter((doc) => ['PA', 'APROV.', 'EI', 'NN'].includes(doc.statusAtual ?? '')).length
-        : documentosPendentesCliente;
 
     return (
         <div className={styles.page}>
@@ -586,10 +579,10 @@ export const PortalCliente = () => {
                     />
                     <KpiCard
                         title="Documentos"
-                        value={totalDocumentosKpi}
-                        subtitle={`${documentosPendentesClienteKpi} pendente(s) de ação do cliente`}
+                        value={totalDocumentos}
+                        subtitle={`${documentosPendentesCliente} pendente(s) de ação do cliente`}
                         icon={<FileText size={18} />}
-                        highlight={documentosPendentesClienteKpi ? 'warning' : 'info'}
+                        highlight={documentosPendentesCliente ? 'warning' : 'info'}
                     />
                     <KpiCard
                         title="Faturado / Pago"
@@ -830,12 +823,7 @@ export const PortalCliente = () => {
                 </section>
 
                 <section className={styles.sectionGrid}>
-                    {exibirControleLdPlanilha ? (
-                        <section className={styles.panel}>
-                            <PortalClienteLdSection projetoPortalLabel={usuarioLogado.projetos[0]?.nome} />
-                        </section>
-                    ) : (
-                        <section className={styles.panel}>
+                    <section className={styles.panel}>
                         <div className={styles.panelHeader}>
                             <div>
                                 <span className={styles.panelEyebrow}>Status dos documentos</span>
@@ -935,7 +923,6 @@ export const PortalCliente = () => {
                             </table>
                         </div>
                     </section>
-                    )}
 
                     <section className={styles.panel}>
                         <div className={styles.panelHeader}>

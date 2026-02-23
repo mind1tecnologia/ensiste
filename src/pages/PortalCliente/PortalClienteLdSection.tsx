@@ -22,7 +22,8 @@ type DisciplinaFiltro = 'TODAS' | 'CIV' | 'EMEC' | 'SPCS';
 type CurvaDisciplina = 'GERAL' | 'CIV' | 'EMEC' | 'SPCS';
 
 interface PortalClienteLdSectionProps {
-    projetoPortalLabel?: string;
+    projetoLabel?: string;
+    contexto?: 'interno' | 'portal';
 }
 
 interface DocumentoInsight {
@@ -342,7 +343,11 @@ const CurveCard = ({
     );
 };
 
-export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({ projetoPortalLabel }) => {
+export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({
+    projetoLabel,
+    contexto = 'interno',
+}) => {
+    const isInterno = contexto === 'interno';
     const [busca, setBusca] = useState('');
     const [filtroDisciplina, setFiltroDisciplina] = useState<DisciplinaFiltro>('TODAS');
     const [filtroStatus, setFiltroStatus] = useState<string>('TODOS');
@@ -504,13 +509,24 @@ export const PortalClienteLdSection: React.FC<PortalClienteLdSectionProps> = ({ 
                 <div>
                     <div className={styles.eyebrow}>
                         <FileSpreadsheet size={14} />
-                        Controle documental importado do Excel (LD)
+                        {isInterno ? 'Gestão interna de documentos ENSISTE (LD)' : 'Controle documental importado do Excel (LD)'}
                     </div>
-                    <h2 className={styles.title}>Lista de Documentos (LD) dentro do Portal do Cliente</h2>
+                    <h2 className={styles.title}>
+                        {isInterno ? 'Controle Documental (LD) da Engenharia' : 'Lista de Documentos (LD) dentro do Portal do Cliente'}
+                    </h2>
                     <p className={styles.subtitle}>
-                        Visualização demo do controle da planilha para o projeto{' '}
-                        <strong>{projetoPortalLabel ?? 'Subestação 230kV'}</strong> com dados reais importados da aba{' '}
-                        <code>{portalClienteLdData.meta.abaPrincipal}</code>.
+                        {isInterno ? 'Visualização interna do fornecedor ENSISTE para acompanhamento de emissão, retorno e aprovação de documentos do projeto ' : 'Visualização demo do controle da planilha para o projeto '}
+                        <strong>{projetoLabel ?? 'Subestação 230kV'}</strong> {isInterno ? 'com dados reais importados do Excel.' : 'com dados reais importados da aba '}
+                        {!isInterno && (
+                            <>
+                                <code>{portalClienteLdData.meta.abaPrincipal}</code>.
+                            </>
+                        )}
+                        {isInterno && (
+                            <>
+                                {' '}Aba de origem: <code>{portalClienteLdData.meta.abaPrincipal}</code>.
+                            </>
+                        )}
                     </p>
                 </div>
                 <div className={styles.headerMeta}>
